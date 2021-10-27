@@ -1,5 +1,7 @@
 import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
 import "firebase/compat/database";
+import "firebase/compat/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -13,5 +15,7 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+const auth = firebase.auth();
 const database = firebase.database();
-export { firebase, database };
+const firestore = firebase.firestore();
+export { firebase, database, firestore, auth };
