@@ -7,9 +7,11 @@ import { CgTrashEmpty } from "react-icons/cg";
 
 import { Modal } from "../../components/ModalFormAddUser";
 import { ModalEdit } from "../../components/ModalEdit";
+import { Profile } from "../../components/Profile";
 
 import "react-toastify/dist/ReactToastify.css";
 import { Container, NoUsers } from "./styles";
+import { useAuth } from "../../context/AuthContext";
 
 interface IUser {
   name: string;
@@ -24,6 +26,8 @@ export function Dashboard() {
 
   const [modalIsActive, setModalIsActive] = useState(false);
   const [editFunctionIsEnabled, setEditFunctionIsEnabled] = useState(false);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     database
@@ -89,6 +93,7 @@ export function Dashboard() {
     <Container>
       <header>
         <h1>Avanz</h1>
+        <Profile {...{ user }} />
       </header>
 
       <main>
