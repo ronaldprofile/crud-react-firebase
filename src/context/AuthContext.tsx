@@ -1,8 +1,10 @@
-import { createContext, ReactNode, useContext } from "react";
-import { useHistory } from "react-router";
+import { createContext, ReactNode, useContext, useState } from "react";
 import { auth, firestore } from "../services/firebase";
+import { IUser } from "../types/User";
 
 interface IAuthContextProps {
+  user: IUser;
+  setUser: React.Dispatch<React.SetStateAction<IUser>>;
   createUser: ({ name, email, password }: ICreateUser) => void;
 }
 
@@ -19,7 +21,7 @@ interface ICreateUser {
 export const AuthContext = createContext({} as IAuthContextProps);
 
 export function AuthProvider({ children }: IAuthProviderProps) {
-  const history = useHistory();
+  const [user, setUser] = useState({} as IUser);
 
   async function createUser({ name, email, password }: ICreateUser) {
     try {
@@ -35,13 +37,25 @@ export function AuthProvider({ children }: IAuthProviderProps) {
         email: email,
         password: password
       });
+
+      setUser({
+        name: name,
+        email: email,
+        password: password
+      });
     } catch (error) {
       if (error) console.log("algo deu errado");
     }
   }
 
   return (
-    <AuthContext.Provider value={{ createUser }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        createUser
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
